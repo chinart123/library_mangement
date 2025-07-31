@@ -5,9 +5,9 @@
 void book_init(Book *book, int id, const char *title, const char *author) {
     book->id = id;
     strncpy(book->title, title, MAX_TITLE_LENGTH - 1);
-    book->title[MAX_TITLE_LENGTH - 1] = '\0';
+    book->title[MAX_TITLE_LENGTH - 1] = '\0'; //Đảm bảo kết thúc chuỗi
     strncpy(book->author, author, MAX_AUTHOR_LENGTH - 1);
-    book->author[MAX_AUTHOR_LENGTH - 1] = '\0';
+    book->author[MAX_AUTHOR_LENGTH - 1] = '\0'; //Đảm bảo kết thúc chuỗi
 }
 
 void book_print_info(const Book *book) {

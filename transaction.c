@@ -6,7 +6,13 @@ void transaction_init(Transaction transactions[], int *count) {
 }
 
 int transaction_borrow(Transaction transactions[], int *count, Book *book, User *user) {
-    // Check if book is already borrowed
+        // Kiểm tra book và user hợp lệ
+    if (book == NULL || user == NULL) {
+        printf("Error: Invalid book or user.\n");
+        return 0;
+    }
+
+    // Kiểm tra sách đã được mượn chưa
     for (int i = 0; i < *count; i++) {
         if (transactions[i].book->id == book->id && transactions[i].is_active) {
             printf("Error: Book ID %d is already borrowed.\n", book->id);
@@ -14,10 +20,21 @@ int transaction_borrow(Transaction transactions[], int *count, Book *book, User 
         }
     }
 
-    if (*count >= MAX_TRANSACTIONS) {
-        printf("Error: Transaction limit reached.\n");
+    // Đếm số sách user đang mượn
+    int borrowed_count = 0;
+    for (int i = 0; i < *count; i++) {
+        if (transactions[i].user->id == user->id && transactions[i].is_active) {
+            borrowed_count++;
+        }
+    }
+
+    // Kiểm tra giới hạn mượn sách
+    if (borrowed_count >= MAX_BOOKS_PER_USER) {
+        printf("Error: User '%s' has reached borrowing limit (%d books).\n", 
+               user->name, MAX_BOOKS_PER_USER);
         return 0;
     }
+
 
     // Create new transaction
     transactions[*count].id = *count + 1;
@@ -31,6 +48,12 @@ int transaction_borrow(Transaction transactions[], int *count, Book *book, User 
 }
 
 int transaction_return(Transaction transactions[], int *count, Book *book, User *user) {
+    // Kiểm tra con trỏ hợp lệ
+    if (book == NULL || user == NULL) {
+        printf("Error: Invalid book or user pointer\n");
+        return 0;
+    }
+    
     for (int i = 0; i < *count; i++) {
         if (transactions[i].book->id == book->id && 
             transactions[i].user->id == user->id &&

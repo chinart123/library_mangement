@@ -6,7 +6,7 @@
 #include "user.h"
 
 #define MAX_TRANSACTIONS 100
-
+#define MAX_BOOKS_PER_USER 3
 typedef struct {
     int id;                // Unique transaction identifier
     Book *book;            // Pointer to the borrowed book
